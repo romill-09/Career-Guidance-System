@@ -2,87 +2,162 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_QLEN 100
-#define MAX_CHOICES 2
-
-struct Node {
-    char question[MAX_QLEN];
-    struct Node* choices[MAX_CHOICES];
+struct TreeNode {
+    char data[50];
+    struct TreeNode* children[10];
+    int num_children;
 };
 
-void createDecisionTree(struct Node** root) {
-    // Root Node
-    *root = (struct Node*)malloc(sizeof(struct Node));
-    if (*root == NULL) {
-        perror("Memory allocation failed");
-        exit(1);
-    }
-    strcpy((*root)->question, "Which Engineering Stream are you interested in?");
-
-    // Computer Science and Engineering Path
-    struct Node* computerScience = (struct Node*)malloc(sizeof(struct Node));
-    if (computerScience == NULL) {
-        perror("Memory allocation failed");
-        exit(1);
-    }
-    strcpy(computerScience->question, "Do you want to pursue further studies in Computer Science?");
-    computerScience->choices[0] = NULL; // No further studies
-    computerScience->choices[1] = (struct Node*)malloc(sizeof(struct Node)); // Yes, further studies
-
-    // Electrical Engineering Path
-    struct Node* electricalEngineering = (struct Node*)malloc(sizeof(struct Node));
-    if (electricalEngineering == NULL) {
-        perror("Memory allocation failed");
-        exit(1);
-    }
-    strcpy(electricalEngineering->question, "Do you want to pursue further studies in Electrical Engineering?");
-    electricalEngineering->choices[0] = (struct Node*)malloc(sizeof(struct Node)); // No, further studies
-    electricalEngineering->choices[1] = (struct Node*)malloc(sizeof(struct Node)); // Yes, further studies
-
-    // Assigning choices
-    (*root)->choices[0] = computerScience;
-    (*root)->choices[1] = electricalEngineering;
-
-    // More choices and paths can be added as needed
+struct TreeNode* createNode(const char* data) {
+    struct TreeNode* newNode = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    strcpy(newNode->data, data);
+    newNode->num_children = 0;
+    return newNode;
 }
 
-void careerGuidance(struct Node* current) {
-    if (current == NULL) {
-        printf("You have reached a career choice!\n");
+void addChild(struct TreeNode* parent, struct TreeNode* child) {
+    if (parent->num_children < 10) {
+        parent->children[parent->num_children] = child;
+        parent->num_children++;
+    }
+}
+
+void displayCareerOptions(struct TreeNode* node) {
+    if (node == NULL) {
         return;
     }
 
-    printf("%s (1/2): ", current->question);
-
-    char choice;
-    if (scanf(" %c", &choice) == 1) {
-        if (choice == '1' && current->choices[0]) {
-            careerGuidance(current->choices[0]);
-        } else if (choice == '2' && current->choices[1]) {
-            careerGuidance(current->choices[1]);
-        } else {
-            printf("Invalid choice. Please enter 1 or 2.\n");
-            careerGuidance(current);
-        }
-    } else {
-        printf("Invalid input. Please enter 1 or 2.\n");
-        careerGuidance(current);
+    printf("Career options for %s:\n", node->data);
+    for (int i = 0; i < node->num_children; i++) {
+        printf("%d. %s\n", i + 1, node->children[i]->data);
     }
 }
 
 int main() {
-    struct Node* root = NULL;
-    createDecisionTree(&root);
+    struct TreeNode* root = createNode("Engineering Streams");
 
-    printf("Welcome to the Career Guidance System!\n");
-    printf("Answer the following questions to get career suggestions.\n");
+    struct TreeNode* computer = createNode("Computer");
+    struct TreeNode* electrical = createNode("Electrical");
+    struct TreeNode* infoTech = createNode("Information Tech");
+    struct TreeNode* mechanical = createNode("Mechanical");
 
-    careerGuidance(root);
+    addChild(root, computer);
+    addChild(root, electrical);
+    addChild(root, infoTech);
+    addChild(root, mechanical);
 
-    // Clean up the allocated memory
-    free(root->choices[0]);
-    free(root->choices[1]);
+    // Adding career options as child nodes for each stream
+    struct TreeNode* computerOptions = createNode("Career Options for Computer");
+    addChild(computer, computerOptions);
+
+    struct TreeNode* electricalOptions = createNode("Career Options for Electrical");
+    addChild(electrical, electricalOptions);
+
+    struct TreeNode* infoTechOptions = createNode("Career Options for Information Tech");
+    addChild(infoTech, infoTechOptions);
+
+    struct TreeNode* mechanicalOptions = createNode("Career Options for Mechanical");
+    addChild(mechanical, mechanicalOptions);
+
+    // Adding career options as child nodes for each stream
+    struct TreeNode* computerOptionsList[] = {
+        createNode("Internships"),
+        createNode("Apprenticeship"),
+        createNode("Jobs"),
+        createNode("Masters"),
+        createNode("Entrepreneurship"),
+        createNode("MBA"),
+        createNode("Exit")
+    };
+
+    for (int i = 0; i < 7; i++) {
+        addChild(computerOptions, computerOptionsList[i]);
+    }
+
+    struct TreeNode* electricalOptionsList[] = {
+        createNode("Internships"),
+        createNode("Apprenticeship"),
+        createNode("Jobs"),
+        createNode("Masters"),
+        createNode("Entrepreneurship"),
+        createNode("MBA"),
+        createNode("Exit")
+    };
+
+    for (int i = 0; i < 7; i++) {
+        addChild(electricalOptions, electricalOptionsList[i]);
+    }
+
+    struct TreeNode* infoTechOptionsList[] = {
+        createNode("Internships"),
+        createNode("Apprenticeship"),
+        createNode("Jobs"),
+        createNode("Masters"),
+        createNode("Entrepreneurship"),
+        createNode("MBA"),
+        createNode("Exit")
+    };
+
+    for (int i = 0; i < 7; i++) {
+        addChild(infoTechOptions, infoTechOptionsList[i]);
+    }
+
+    struct TreeNode* mechanicalOptionsList[] = {
+        createNode("Internships"),
+        createNode("Apprenticeship"),
+        createNode("Jobs"),
+        createNode("Masters"),
+        createNode("Entrepreneurship"),
+        createNode("MBA"),
+        createNode("Exit")
+    };
+
+    for (int i = 0; i < 7; i++) {
+        addChild(mechanicalOptions, mechanicalOptionsList[i]);
+    }
+
+    int choice;
+
+    printf("Choose an engineering stream:\n");
+    printf("1. Computer\n");
+    printf("2. Electrical\n");
+    printf("3. Information Tech\n");
+    printf("4. Mechanical\n");
+    printf("5. Quit\n");
+    scanf("%d", &choice);
+
+    if (choice < 1 || choice > 4) {
+        printf("Invalid choice. Exiting the program. Thank you!\n");
+        free(root);
+        return 0;
+    }
+
+    displayCareerOptions(root->children[choice - 1]);
+
+    while (1) {
+        printf("Choose a career option or enter 7 to quit:\n");
+        printf("1. Internships\n");
+        printf("2. Apprenticeships\n");
+        printf("3. Jobs\n");
+        printf("4. Masters\n");
+        printf("5. Entrepreneurships\n");
+        printf("6. MBA\n");
+        printf("7. Quit\n");
+        scanf("%d", &choice);
+
+        if (choice == 7) {
+            printf("Exiting the program. Thank you!\n");
+            break;
+        }
+
+        if (choice < 1 || choice > root->children[0]->num_children) {
+            printf("Invalid choice. Please enter a valid option.\n");
+        } else {
+            displayCareerOptions(root->children[choice - 1]);
+        }
+    }
+
+    // Clean up memory
     free(root);
-
     return 0;
 }
