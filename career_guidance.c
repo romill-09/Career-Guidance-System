@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_SIZE 100
-
+// Define a struct for the decision tree node
 typedef struct node {
     struct node * root;
     struct node * yes;
@@ -12,6 +11,7 @@ typedef struct node {
     
 }node;
 
+// Function to create a new node with the given data
 struct node * createNode(const char * data)
 {
     node * newNode = (node *) malloc(sizeof(node));
@@ -24,6 +24,7 @@ struct node * createNode(const char * data)
     return newNode;
 }
 
+// Function to add child nodes for a given root node
 void addchild(node * root, const char * yesData, const char * noData)
 {
     if (root -> yes == NULL && root -> no == NULL)
@@ -33,7 +34,7 @@ void addchild(node * root, const char * yesData, const char * noData)
     }
 }
 
-
+// Function to add career options to the decision tree
 void addCareerOptions(node * root, char * Further_Studies, const char * Jobs_Certifications)
 {
     //Path for Computer Engineering
@@ -122,7 +123,7 @@ void addCareerOptions(node * root, char * Further_Studies, const char * Jobs_Cer
     root -> yes -> no -> no -> no -> yes -> yes -> no -> no = createNode("Civil Services");
 }
 
-
+// Function to display the branches of the decision tree
 void displaybranch(node * branch)
 {
     if (branch == NULL)
@@ -136,7 +137,7 @@ void displaybranch(node * branch)
     displaybranch(branch -> no);
 }
 
-
+// Function for career guidance
 void careerGuidance(node* current, int* flag) {
 
     
@@ -155,9 +156,6 @@ void careerGuidance(node* current, int* flag) {
     while(*flag == 1)
     {
         printf("%s (1/0): \n", current->data);
-        // printf("1: %s\n", (current->yes)? current->yes->data: "No Choice");
-        // printf("0: %s\n", (current->no)? current->no->data: "No Choice");
-        // printf("\n");
 
         int choice;
         scanf("%d", &choice);
@@ -183,38 +181,41 @@ int main()
     int branchChoice;
     scanf("%d", &branchChoice);
 
-
-
+    // Add child nodes based on the user's choice
     addchild(root, "Computer Engineerng", "Choose yes and find best suited suggestion for your career ");
 
 
     switch (branchChoice) {
         case 1:
             addCareerOptions(root, "Further Studies in Computer Engineering", "Jobs/Certifications in Computer Engineering");
-            root = root->yes->yes;
+            root = root -> yes -> yes; // Set the root node to the appropriate branch
             break;
         case 2:
             addCareerOptions(root, "Further Studies in Information Technology Engineering", "Jobs/Certifications in IT Engineering");
-            root = root->yes->no->yes;
+            root = root -> yes -> no -> yes; // Set the root node to the appropriate branchv
             break;
         case 3:
             addCareerOptions(root, "Further Studies in Electrical Engineering", "Jobs/Certifications in Electrical Engineering");
-            root = root->yes->no->no->yes;
+            root = root -> yes -> no -> no -> yes; // Set the root node to the appropriate branch
             break;
         case 4:
             addCareerOptions(root, "Further Studies in Mechanical Engineering", "Jobs/Certifications in Mechanical Engineering");
-            root->yes->no->no->no->yes;
+            root->yes -> no -> no -> no -> yes; // Set the root node to the appropriate branch
             break;
         default:
-            printf("Invalid choice. Exiting.\n");
+            printf("Invalid choice. Exiting.\n"); // Print the defualt case if none of the above cases are applicable.
             return 1;
     }
 
-    // displaybranch(root);
-
+    // Display the decision tree
+    // Call career guidance function
     printf("\nCareer Guidance:\n");
     int flag = 1;
     careerGuidance(root, &flag);
 
+    free(root -> yes);
+    free(root -> no);
+    free(root);
+    
     return 0;
 }
