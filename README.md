@@ -9,7 +9,7 @@ This project is a simple command-line application that provides career guidance 
 ## Getting Started
 Follow these instructions to get the project up and running on your local machine.
 
-### Prerequisites
+## Prerequisites
 You need to have the following software installed on your machine:
 - C Compiler (e.g., GCC)
 - Git (optional)
