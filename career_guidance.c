@@ -137,29 +137,34 @@ void displaybranch(node * branch)
 }
 
 
-void careerGuidance(node* current) {
+void careerGuidance(node* current, int* flag) {
+
+    
     if (current == NULL) {
+        *flag = 0;
         printf("You have reached a career choice!\n");
         return;
     }
 
-    while(current != NULL)
+    if(current->yes == NULL && current->no == NULL) {
+        *flag = 0;
+        printf("You have reached a career choice! %s \n", current->data);
+        return;
+    }
+
+    while(*flag == 1)
     {
-        printf("%s (1/0): ", current->data);
+        printf("%s (1/0): \n", current->data);
+        // printf("1: %s\n", (current->yes)? current->yes->data: "No Choice");
+        // printf("0: %s\n", (current->no)? current->no->data: "No Choice");
+        // printf("\n");
 
         int choice;
-        if (scanf("%d", &choice) == 1) {
-            if (choice == 1 && current->yes) {
-                careerGuidance(current->yes);
-            } else if (choice == 0 && current->no) {
-                careerGuidance(current->no);
-            } else {
-                printf("Invalid choice. Please enter 1 or 0.\n");
-                careerGuidance(current);
-            }
+        scanf("%d", &choice);
+        if (choice == 1) {
+            careerGuidance(current->yes, flag);
         } else {
-            printf("Invalid input. Please enter 1 or 0.\n");
-            careerGuidance(current);
+                careerGuidance(current->no, flag);
         }
     }
 }
@@ -182,28 +187,34 @@ int main()
 
     addchild(root, "Computer Engineerng", "Choose yes and find best suited suggestion for your career ");
 
+
     switch (branchChoice) {
         case 1:
             addCareerOptions(root, "Further Studies in Computer Engineering", "Jobs/Certifications in Computer Engineering");
+            root = root->yes->yes;
             break;
         case 2:
             addCareerOptions(root, "Further Studies in Information Technology Engineering", "Jobs/Certifications in IT Engineering");
+            root = root->yes->no->yes;
             break;
         case 3:
             addCareerOptions(root, "Further Studies in Electrical Engineering", "Jobs/Certifications in Electrical Engineering");
+            root = root->yes->no->no->yes;
             break;
         case 4:
             addCareerOptions(root, "Further Studies in Mechanical Engineering", "Jobs/Certifications in Mechanical Engineering");
+            root->yes->no->no->no->yes;
             break;
         default:
             printf("Invalid choice. Exiting.\n");
             return 1;
     }
 
-    displaybranch(root);
+    // displaybranch(root);
 
     printf("\nCareer Guidance:\n");
-    careerGuidance(root);
+    int flag = 1;
+    careerGuidance(root, &flag);
 
     return 0;
 }
