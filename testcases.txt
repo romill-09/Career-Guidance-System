@@ -1,0 +1,11 @@
+Testcase1: Creation of a node.
+
+Testcase2: Adding the Engineerng branches as nodes.
+
+Testcase3: Adding Career Options as childnodes.
+
+Testcase4: Showing career options based on the user inputs '1s' or '0s'.
+
+Testcase5: To check the career suggested when user reaches the leaf node.
+
+Testcase6: Main Testing.
