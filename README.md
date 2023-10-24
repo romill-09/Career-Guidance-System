@@ -1,8 +1,5 @@
 # Career Guidance System
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/main
 This project is a simple command-line application that provides career guidance by using a decision tree data structure. Users can choose an engineering branch and navigate through a series of questions to receive career suggestions based on their choices.
 
 ## Features
@@ -13,21 +10,12 @@ This project is a simple command-line application that provides career guidance 
 ## Getting Started
 Follow these instructions to get the project up and running on your local machine.
 
-<<<<<<< HEAD
-### Prerequisites
-You need to have the following software installed on your machine:
-
-=======
 ## Prerequisites
 You need to have the following software installed on your machine:
->>>>>>> origin/main
+
 - C Compiler (e.g., GCC)
 - Git (optional)
 
 ## Usage
 1. Follow the on-screen instructions to choose an engineering branch and receive career guidance based on your choices.
-<<<<<<< HEAD
 2. Make choices by entering `1` for "Yes" and `0` for "No."
-=======
-2. Make choices by entering `1` for "Yes" and `0` for "No."
->>>>>>> origin/main
